@@ -1,0 +1,14 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "perfectmobfarm:item/mob_shard"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"perfectmobfarm:completed": 1.0
+			},
+			"model": "perfectmobfarm:item/mob_shard_completed"
+		}
+	]
+}
