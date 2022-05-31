@@ -1,6 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block;
 
-import com.sweetmimike.perfectmobfarm.block.entity.FarmEntity;
+import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -17,24 +17,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class MobFarm extends BaseEntityBlock {
+public class IronMobFarm extends BaseEntityBlock {
 
-    public MobFarm(Properties properties) {
+    public IronMobFarm(Properties properties) {
         super(properties);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new FarmEntity(pPos, pState);
+        return new IronMobFarmEntity(pPos, pState);
     }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof FarmEntity) {
-                NetworkHooks.openGui(((ServerPlayer) pPlayer), (FarmEntity) entity, pPos);
+            if (entity instanceof IronMobFarmEntity) {
+                NetworkHooks.openGui(((ServerPlayer) pPlayer), (IronMobFarmEntity) entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -47,7 +47,7 @@ public class MobFarm extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return pLevel.isClientSide() ? null : ((pLevel1, pPos, pState1, pBlockEntity) -> {
-            ((FarmEntity) pBlockEntity).tick();
+            ((IronMobFarmEntity) pBlockEntity).tick();
         });
     }
 

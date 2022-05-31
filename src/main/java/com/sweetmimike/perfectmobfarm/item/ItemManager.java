@@ -13,7 +13,7 @@ public class ItemManager {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PerfectMobFarm.MODID);
 
     public static final RegistryObject<Item> MOB_SHARD = ITEMS.register("mob_shard",
-            () -> new MobShard(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1)));
+            () -> new MobShard(new Item.Properties().tab(PerfectMobFarm.PERFECT_MOB_FARM_TAB).stacksTo(1)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

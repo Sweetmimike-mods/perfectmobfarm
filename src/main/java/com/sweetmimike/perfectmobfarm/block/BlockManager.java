@@ -19,8 +19,8 @@ public class BlockManager {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PerfectMobFarm.MODID);
 
-    public static final RegistryObject<Block> MOB_FARM = registerBlock("mob_farm",
-            () -> new MobFarm(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5f)));
+    public static final RegistryObject<Block> IRON_MOB_FARM = registerBlock("iron_mob_farm",
+            () -> new IronMobFarm(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5f)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

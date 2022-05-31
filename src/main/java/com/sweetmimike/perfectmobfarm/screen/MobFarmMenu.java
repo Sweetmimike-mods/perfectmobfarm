@@ -1,24 +1,22 @@
 package com.sweetmimike.perfectmobfarm.screen;
 
 import com.sweetmimike.perfectmobfarm.block.BlockManager;
-import com.sweetmimike.perfectmobfarm.block.entity.FarmEntity;
+import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 
 public class MobFarmMenu extends AbstractContainerMenu {
 
-    private final FarmEntity farmEntity;
+    private final IronMobFarmEntity farmEntity;
     private final Level level;
 
     public MobFarmMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
@@ -28,7 +26,7 @@ public class MobFarmMenu extends AbstractContainerMenu {
     public MobFarmMenu(int pContainerId, Inventory inv, BlockEntity entity) {
         super(MenuManager.MOB_FARM_MENU.get(), pContainerId);
         checkContainerSize(inv, 1);
-        farmEntity = ((FarmEntity) entity);
+        farmEntity = ((IronMobFarmEntity) entity);
         this.level = inv.player.level;
 
         addPlayerInventory(inv);
@@ -94,7 +92,7 @@ public class MobFarmMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, farmEntity.getBlockPos()),
-                pPlayer, BlockManager.MOB_FARM.get());
+                pPlayer, BlockManager.IRON_MOB_FARM.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

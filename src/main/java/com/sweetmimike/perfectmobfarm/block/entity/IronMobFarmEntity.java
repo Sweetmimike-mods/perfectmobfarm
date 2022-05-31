@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FarmEntity extends BlockEntity implements MenuProvider {
+public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     private int cooldown;
     private int timer;
@@ -44,13 +44,11 @@ public class FarmEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
-            System.out.println("CONTENT CHANGED IN SLOT : " + slot);
             if (this.getStackInSlot(slot).getItem() == ItemManager.MOB_SHARD.get()) {
                 isActive = true;
             } else {
                 isActive = false;
             }
-            System.out.println("ISACTIVE = " + isActive);
             timer = 0;
             setChanged();
         }
@@ -58,7 +56,7 @@ public class FarmEntity extends BlockEntity implements MenuProvider {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public FarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
+    public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(BlockEntityManager.FARM_ENTITY.get(), pWorldPosition, pBlockState);
         this.cooldown = 60;
         timer = 0;
@@ -118,7 +116,7 @@ public class FarmEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Mob Farm");
+        return new TextComponent("Iron Mob Farm");
     }
 
     @NotNull

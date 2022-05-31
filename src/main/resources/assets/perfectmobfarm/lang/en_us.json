@@ -1,4 +1,6 @@
 {
 	"item.perfectmobfarm.mob_shard": "Mob Shard",
-	"block.perfectmobfarm.mob_farm": "Mob Farm"
+	"block.perfectmobfarm.iron_mob_farm": "Iron Mob Farm",
+
+	"itemGroup.perfectmobfarmtab": "Perfect Mob Farm"
 }
