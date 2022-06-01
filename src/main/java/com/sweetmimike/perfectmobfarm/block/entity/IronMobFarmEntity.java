@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -56,10 +57,13 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
+    protected IronMobFarmEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState, int cooldown) {
+        super(pType, pWorldPosition, pBlockState);
+        this.cooldown = cooldown;
+    }
+
     public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntityManager.FARM_ENTITY.get(), pWorldPosition, pBlockState);
-        this.cooldown = 60;
-        timer = 0;
+        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 60);
     }
 
     public void tick() {
@@ -73,7 +77,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     }
 
     public void generateDrop() {
-        System.out.println("CALL GENERATE DROP2");
+        System.out.println("CALL GENERATE DROP FROM " + this.getClass().getName());
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() == ItemManager.MOB_SHARD.get()) {
             CompoundTag nbtData = mobShard.getTag();
@@ -86,8 +90,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
                     LootTables ltManager = this.getLevel().getServer().getLootTables();
                     LootTable lt = ltManager.get(loc);
                     Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
-                    LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level))
-                            .withParameter(LootContextParams.ORIGIN, position);
+                    LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, position);
 
                     LootContext ctx = builder.create(LootContextParamSets.EMPTY);
                     List<ItemStack> generated = lt.getRandomItems(ctx);

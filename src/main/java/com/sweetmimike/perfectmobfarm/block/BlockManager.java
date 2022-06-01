@@ -22,6 +22,9 @@ public class BlockManager {
     public static final RegistryObject<Block> IRON_MOB_FARM = registerBlock("iron_mob_farm",
             () -> new IronMobFarm(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5f)));
 
+    public static final RegistryObject<Block> GOLD_MOB_FARM = registerBlock("gold_mob_farm",
+            () -> new GoldMobFarm(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5f)));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, PerfectMobFarm.PERFECT_MOB_FARM_TAB);

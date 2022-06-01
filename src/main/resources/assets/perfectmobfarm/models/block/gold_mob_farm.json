@@ -1,0 +1,6 @@
+{
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "perfectmobfarm:block/gold_mob_farm"
+	}
+}

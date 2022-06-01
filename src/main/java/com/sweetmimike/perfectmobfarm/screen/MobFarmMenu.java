@@ -1,6 +1,7 @@
 package com.sweetmimike.perfectmobfarm.screen;
 
 import com.sweetmimike.perfectmobfarm.block.BlockManager;
+import com.sweetmimike.perfectmobfarm.block.IronMobFarm;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -91,8 +92,13 @@ public class MobFarmMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(ContainerLevelAccess.create(level, farmEntity.getBlockPos()),
-                pPlayer, BlockManager.IRON_MOB_FARM.get());
+//        return stillValid(ContainerLevelAccess.create(level, farmEntity.getBlockPos()),
+//                pPlayer, BlockManager.IRON_MOB_FARM.get());
+        if (!(this.level.getBlockEntity(this.farmEntity.getBlockPos()).getBlockState().getBlock() instanceof IronMobFarm)) {
+            return false;
+        } else {
+            return !(pPlayer.distanceToSqr((double) this.farmEntity.getBlockPos().getX() + 0.5D, (double) this.farmEntity.getBlockPos().getY() + 0.5D, (double) this.farmEntity.getBlockPos().getZ() + 0.5D) > 64.0D);
+        }
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
