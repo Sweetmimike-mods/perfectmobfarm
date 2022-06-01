@@ -1,5 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
+import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmMenu;
@@ -77,7 +78,8 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     }
 
     public void generateDrop() {
-        System.out.println("CALL GENERATE DROP FROM " + this.getClass().getName());
+//        System.out.println("CALL GENERATE DROP FROM " + this.getClass().getName());
+        PerfectMobFarm.LOGGER.debug("CALL GENERATE DROP FROM " + this.getClass().getName());
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() == ItemManager.MOB_SHARD.get()) {
             CompoundTag nbtData = mobShard.getTag();
