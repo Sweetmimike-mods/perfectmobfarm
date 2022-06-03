@@ -9,12 +9,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+/**
+ * Mob farm screen
+ */
 public class MobFarmScreen extends AbstractContainerScreen<MobFarmMenu> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(PerfectMobFarm.MODID, "textures/gui/mob_farm_gui.png");
 
     public MobFarmScreen(MobFarmMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+
+        // Change to fit to the actual gui texture
         this.imageHeight = 133;
         this.inventoryLabelY = this.imageHeight - 94;
     }

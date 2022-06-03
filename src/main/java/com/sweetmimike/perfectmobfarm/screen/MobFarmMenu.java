@@ -1,13 +1,11 @@
 package com.sweetmimike.perfectmobfarm.screen;
 
-import com.sweetmimike.perfectmobfarm.block.BlockManager;
 import com.sweetmimike.perfectmobfarm.block.IronMobFarm;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -15,9 +13,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+/**
+ * Mob Farm menu displayed when right clicking on a mob farm block
+ */
 public class MobFarmMenu extends AbstractContainerMenu {
 
+    /** Clicked entity */
     private final IronMobFarmEntity farmEntity;
+
+    /** Current level */
     private final Level level;
 
     public MobFarmMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {

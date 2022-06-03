@@ -1,5 +1,8 @@
 package com.sweetmimike.perfectmobfarm.utils;
 
+/**
+ * Util class in charge of referencing the nbt tags used in the mod
+ */
 public class NbtTagsName {
     public static final String MOB = "perfectmobfarm:mob";
     public static final String KILLED_COUNT = "perfectmobfarm:killed_count";

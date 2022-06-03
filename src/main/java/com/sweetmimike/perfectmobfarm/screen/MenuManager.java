@@ -10,6 +10,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * Manager for the mod menus
+ */
 public class MenuManager {
 
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -17,7 +20,6 @@ public class MenuManager {
 
     public static final RegistryObject<MenuType<MobFarmMenu>> MOB_FARM_MENU =
             registerMenuType(MobFarmMenu::new, "mob_farm_menu");
-
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                   String name) {
