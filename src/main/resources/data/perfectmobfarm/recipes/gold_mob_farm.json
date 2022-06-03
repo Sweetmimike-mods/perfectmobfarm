@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#R#",
+    "BPB",
+    "#R#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:gold_block"
+    },
+    "R": {
+      "item": "minecraft:slime_ball"
+    },
+    "B": {
+      "item": "minecraft:ender_pearl"
+    },
+    "P": {
+      "item": "perfectmobfarm:iron_mob_farm"
+    }
+  },
+  "result": {
+    "item": "perfectmobfarm:gold_mob_farm",
+    "count": 1
+  }
+}

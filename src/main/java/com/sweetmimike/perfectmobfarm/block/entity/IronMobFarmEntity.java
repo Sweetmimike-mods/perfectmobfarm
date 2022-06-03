@@ -1,6 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
-import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
+import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmMenu;
@@ -34,6 +34,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -42,11 +43,14 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     private int cooldown;
     private int timer;
     private boolean isActive;
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
-            if (this.getStackInSlot(slot).getItem() == ItemManager.MOB_SHARD.get()) {
+            ItemStack stack = this.getStackInSlot(slot);
+            if (stack.getItem() == ItemManager.MOB_SHARD.get() && stack.getTag() != null
+                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == MobShard.KILL_NEEDED) {
                 isActive = true;
             } else {
                 isActive = false;
@@ -67,6 +71,10 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 60);
     }
 
+    /**
+     * Function called each tick.
+     * If the mob farm is active, then call generate drop.
+     */
     public void tick() {
         if (isActive) {
             timer++;
@@ -77,9 +85,11 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         }
     }
 
+    /**
+     * Generate drops from the mob type captured by the mob shard in the mob farm.
+     */
     public void generateDrop() {
-//        System.out.println("CALL GENERATE DROP FROM " + this.getClass().getName());
-        PerfectMobFarm.LOGGER.debug("CALL GENERATE DROP FROM " + this.getClass().getName());
+        LOGGER.debug("CALL GENERATE DROP FROM " + this.getClass().getName());
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() == ItemManager.MOB_SHARD.get()) {
             CompoundTag nbtData = mobShard.getTag();

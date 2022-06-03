@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "perfectmobfarm:mob_shard"
+    }
+  ],
+  "result": {
+    "item": "perfectmobfarm:mob_shard",
+    "count": 1
+  }
+}

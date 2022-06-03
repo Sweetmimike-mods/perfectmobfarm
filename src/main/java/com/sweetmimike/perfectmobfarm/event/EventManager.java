@@ -7,6 +7,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -27,6 +30,10 @@ public class EventManager {
         Player pPlayer = event.getPlayer();
         if (pPlayer.getLevel().isClientSide()) {
             if (event.getItemStack().getItem() instanceof MobShard && event.getTarget() instanceof Mob mob) {
+                if (mob instanceof WitherBoss || mob instanceof EnderDragon || mob instanceof ElderGuardian) {
+                    pPlayer.sendMessage(new TextComponent("You can't capture this mob"), pPlayer.getUUID());
+                    return;
+                }
                 ItemStack shardStack = event.getItemStack();
                 CompoundTag nbtTag = null;
                 if (!(shardStack.hasTag())) {
@@ -34,14 +41,11 @@ public class EventManager {
                     CompoundTag nbtMobTag = new CompoundTag();
                     mob.save(nbtMobTag);
 
-                    System.out.println("MOB LOOT LOCATION " + mob.getLootTable());
-                    System.out.println("MOB LOOT LOCATION PATH " + mob.getLootTable().toString());
-
                     nbtTag.putString(NbtTagsName.MOB, mob.getName().getString());
                     nbtTag.putInt(NbtTagsName.KILLED_COUNT, 0);
                     nbtTag.putString(NbtTagsName.RESOURCE_LOCATION, mob.getLootTable().toString());
                     shardStack.setTag(nbtTag);
-                    pPlayer.sendMessage(new TextComponent("You set the shard on " + mob.getDisplayName().getString()), pPlayer.getUUID());
+                    pPlayer.sendMessage(new TextComponent(mob.getDisplayName().getString() + " captured !"), pPlayer.getUUID());
                 } else {
                     nbtTag = shardStack.getTag();
                 }
@@ -63,8 +67,6 @@ public class EventManager {
                 if (is.getItem() instanceof MobShard) {
                     CompoundTag nbtData = is.getTag();
                     if (nbtData != null && nbtData.contains(NbtTagsName.MOB)) {
-//                        Mob mob = null;
-//                        mob.deserializeNBT(nbtData.getCompound(NbtTagsName.MOB));
                         String mobName = nbtData.getString(NbtTagsName.MOB);
                         if (mobName.equals(event.getEntity().getName().getString())) {
                             int killed_count = nbtData.getInt(NbtTagsName.KILLED_COUNT);
