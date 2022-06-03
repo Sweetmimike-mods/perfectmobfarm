@@ -36,7 +36,7 @@ public class EventManager {
                 }
                 ItemStack shardStack = event.getItemStack();
                 CompoundTag nbtTag = null;
-                if (!(shardStack.hasTag())) {
+                if (shardStack.getTag().get(NbtTagsName.MOB) == null) {
                     nbtTag = new CompoundTag();
                     CompoundTag nbtMobTag = new CompoundTag();
                     mob.save(nbtMobTag);
@@ -48,6 +48,7 @@ public class EventManager {
                     pPlayer.sendMessage(new TextComponent(mob.getDisplayName().getString() + " captured !"), pPlayer.getUUID());
                 } else {
                     nbtTag = shardStack.getTag();
+                    System.out.println("ALREADY GOT TAG " + nbtTag);
                 }
             }
 

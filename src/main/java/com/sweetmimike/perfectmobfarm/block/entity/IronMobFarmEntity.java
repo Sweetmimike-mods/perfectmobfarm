@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
@@ -95,24 +96,45 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
             CompoundTag nbtData = mobShard.getTag();
             if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == MobShard.KILL_NEEDED) {
                 BlockEntity container = getNearbyContainer();
-                if (container != null) {
-                    String resourcePath = nbtData.getString(NbtTagsName.RESOURCE_LOCATION);
-                    ResourceLocation loc = new ResourceLocation(resourcePath);
+                if (container == null) {
+                    LOGGER.debug("GENERATE-DROP ~ No container found");
+                    return;
+                }
+                String resourcePath = nbtData.getString(NbtTagsName.RESOURCE_LOCATION);
+                ResourceLocation loc = new ResourceLocation(resourcePath);
 
-                    LootTables ltManager = this.getLevel().getServer().getLootTables();
-                    LootTable lt = ltManager.get(loc);
-                    Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
-                    LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, position);
+                LootTables ltManager = this.getLevel().getServer().getLootTables();
+                LootTable lt = ltManager.get(loc);
+                Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
+                LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, position);
 
-                    LootContext ctx = builder.create(LootContextParamSets.EMPTY);
-                    List<ItemStack> generated = lt.getRandomItems(ctx);
-                    container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
-                        for (ItemStack itemStack : generated) {
-                            ItemHandlerHelper.insertItemStacked(iItemHandler, itemStack, false);
+                LootContext ctx = builder.create(LootContextParamSets.EMPTY);
+                List<ItemStack> generated = lt.getRandomItems(ctx);
+
+                // Boolean value to determine if we can place at least one of the generated itemStacks
+                AtomicBoolean canBePlaced = new AtomicBoolean(false);
+                container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                    for (ItemStack itemStack : generated) {
+                        ItemStack remainingStack = ItemHandlerHelper.insertItemStacked(iItemHandler, itemStack, false);
+
+                        // If the counts are different, then at least one item as been placed
+                        if (itemStack.getCount() != remainingStack.getCount()) {
+                            canBePlaced.set(true);
                         }
-                    });
+                    }
+                });
+
+                // If no item can be placed, then stop damaging the mob shard
+                if (canBePlaced.get()) {
+                    boolean toDelete = mobShard.hurt(1, level.getRandom(), null);
+                    if (toDelete) {
+                        mobShard.setCount(0);
+                    }
                 }
             }
+        } else {
+            // If the itemstack in slot is not a mob shard, then turn mob farm off
+            isActive = false;
         }
     }
 

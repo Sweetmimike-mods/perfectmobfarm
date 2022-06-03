@@ -40,11 +40,11 @@ public class MobShard extends Item {
         CompoundTag nbtTag = pStack.getTag();
         if (nbtTag != null) {
             if (nbtTag.contains(NbtTagsName.MOB) && nbtTag.contains(NbtTagsName.KILLED_COUNT)) {
-//                Mob targetMob =  nbtTag.getCompound(NbtTagsName.MOB);
-//                targetMob.deserializeNBT(nbtTag.getCompound(NbtTagsName.MOB));
 
                 String mobName = nbtTag.getString(NbtTagsName.MOB);
                 int killed_count = nbtTag.getInt(NbtTagsName.KILLED_COUNT);
+                int maxDamage = pStack.getMaxDamage();
+                int currentDurability = maxDamage - pStack.getDamageValue();
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC + mobName));
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC +
                         "Killed : " + killed_count + "/" + KILL_NEEDED));
