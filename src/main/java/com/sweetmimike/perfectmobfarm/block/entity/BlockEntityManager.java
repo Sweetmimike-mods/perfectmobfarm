@@ -9,6 +9,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * Manager for the mod block entities
+ */
 public class BlockEntityManager {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =

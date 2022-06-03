@@ -1,6 +1,5 @@
 package com.sweetmimike.perfectmobfarm.block;
 
-import com.sweetmimike.perfectmobfarm.block.entity.BlockEntityManager;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +17,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Iron Mob Farm block
+ */
 public class IronMobFarm extends BaseEntityBlock {
 
     public IronMobFarm(Properties properties) {

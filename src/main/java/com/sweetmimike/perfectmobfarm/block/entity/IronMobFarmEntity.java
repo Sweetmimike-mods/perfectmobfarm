@@ -40,6 +40,9 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Entity for the Iron Mob Farm block
+ */
 public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     private int cooldown;
