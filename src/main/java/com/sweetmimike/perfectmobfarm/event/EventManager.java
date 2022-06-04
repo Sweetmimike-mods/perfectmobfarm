@@ -1,10 +1,13 @@
 package com.sweetmimike.perfectmobfarm.event;
 
+import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -15,12 +18,14 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.slf4j.Logger;
 
 /**
  * Manager for the mod events
  */
 @Mod.EventBusSubscriber(modid = PerfectMobFarm.MODID)
 public class EventManager {
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * Called when a player right click on a mob with a mob shard
@@ -42,10 +47,17 @@ public class EventManager {
                     nbtTag = new CompoundTag();
                     CompoundTag nbtMobTag = new CompoundTag();
                     mob.save(nbtMobTag);
+                    Entity e = null;
+                    if (EntityType.byString(mob.getEncodeId()).isPresent()) {
+                        e = EntityType.byString(mob.getEncodeId()).get().create(event.getWorld());
+                    }
+//                    Entity e = EntityType.byString(mob.getEncodeId()).get().create(event.getWorld());
+                    LOGGER.debug("CLICK MOB SHARD ~ ENTITY " + e);
 
                     nbtTag.putString(NbtTagsName.MOB, mob.getName().getString());
                     nbtTag.putInt(NbtTagsName.KILLED_COUNT, 0);
                     nbtTag.putString(NbtTagsName.RESOURCE_LOCATION, mob.getLootTable().toString());
+                    nbtTag.putString(NbtTagsName.MOB_ID, mob.getEncodeId());
                     shardStack.setTag(nbtTag);
                     pPlayer.sendMessage(new TextComponent(mob.getDisplayName().getString() + " captured !"), pPlayer.getUUID());
                 } else {
@@ -77,6 +89,9 @@ public class EventManager {
                                 killed_count = killed_count + 1;
                                 nbtData.putInt(NbtTagsName.KILLED_COUNT, killed_count);
                                 is.setTag(nbtData);
+
+                                // Break when one mob shard has been incremented to avoid incrementation of every mob shard
+                                break;
                             }
                         }
                     }
