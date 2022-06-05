@@ -9,6 +9,8 @@ import com.sweetmimike.perfectmobfarm.screen.MenuManager;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmScreen;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -70,6 +72,9 @@ public class PerfectMobFarm {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         MenuScreens.register(MenuManager.MOB_FARM_MENU.get(), MobFarmScreen::new);
+
+        ItemBlockRenderTypes.setRenderLayer(BlockManager.IRON_MOB_FARM.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockManager.GOLD_MOB_FARM.get(), RenderType.translucent());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

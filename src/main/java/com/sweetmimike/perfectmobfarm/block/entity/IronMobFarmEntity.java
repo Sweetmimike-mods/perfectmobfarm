@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -49,6 +50,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     private int timer;
     private boolean isActive;
     private static final Logger LOGGER = LogUtils.getLogger();
+    private Entity entityToDisplay;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
@@ -208,5 +210,13 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+    }
+
+    public Entity getEntityToDisplay() {
+        return entityToDisplay;
+    }
+
+    public void setEntityToDisplay(Entity entityToDisplay) {
+        this.entityToDisplay = entityToDisplay;
     }
 }

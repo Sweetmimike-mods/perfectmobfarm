@@ -35,7 +35,7 @@ public class EventManager {
     @SubscribeEvent
     public static void clickMobShard(PlayerInteractEvent.EntityInteract event) {
         Player pPlayer = event.getPlayer();
-        if (pPlayer.getLevel().isClientSide()) {
+        if (!pPlayer.getLevel().isClientSide()) {
             if (event.getItemStack().getItem() instanceof MobShard && event.getTarget() instanceof Mob mob) {
                 if (mob instanceof WitherBoss || mob instanceof EnderDragon || mob instanceof ElderGuardian) {
                     pPlayer.sendMessage(new TextComponent("You can't capture this mob"), pPlayer.getUUID());
@@ -45,14 +45,8 @@ public class EventManager {
                 CompoundTag nbtTag = null;
                 if (shardStack.getTag().get(NbtTagsName.MOB) == null) {
                     nbtTag = new CompoundTag();
-                    CompoundTag nbtMobTag = new CompoundTag();
-                    mob.save(nbtMobTag);
-                    Entity e = null;
-                    if (EntityType.byString(mob.getEncodeId()).isPresent()) {
-                        e = EntityType.byString(mob.getEncodeId()).get().create(event.getWorld());
-                    }
-//                    Entity e = EntityType.byString(mob.getEncodeId()).get().create(event.getWorld());
-                    LOGGER.debug("CLICK MOB SHARD ~ ENTITY " + e);
+//                    CompoundTag nbtMobTag = new CompoundTag();
+//                    mob.save(nbtMobTag);
 
                     nbtTag.putString(NbtTagsName.MOB, mob.getName().getString());
                     nbtTag.putInt(NbtTagsName.KILLED_COUNT, 0);
@@ -61,8 +55,8 @@ public class EventManager {
                     shardStack.setTag(nbtTag);
                     pPlayer.sendMessage(new TextComponent(mob.getDisplayName().getString() + " captured !"), pPlayer.getUUID());
                 } else {
-                    nbtTag = shardStack.getTag();
-                    System.out.println("ALREADY GOT TAG " + nbtTag);
+                    String mobName = shardStack.getTag().getString(NbtTagsName.MOB);
+                    pPlayer.sendMessage(new TextComponent("You already captured a " + mobName), pPlayer.getUUID());
                 }
             }
 
