@@ -23,6 +23,9 @@ public class BlockEntityManager {
     public static final RegistryObject<BlockEntityType<GoldMobFarmEntity>> GOLD_MOB_FARM_ENTITY = BLOCK_ENTITIES.register("gold_mob_farm_entity",
             () -> Builder.of(GoldMobFarmEntity::new, BlockManager.GOLD_MOB_FARM.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<DiamondMobFarmEntity>> DIAMOND_MOB_FARM_ENTITY = BLOCK_ENTITIES.register("diamond_mob_farm_entity",
+            () -> Builder.of(DiamondMobFarmEntity::new, BlockManager.DIAMOND_MOB_FARM.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

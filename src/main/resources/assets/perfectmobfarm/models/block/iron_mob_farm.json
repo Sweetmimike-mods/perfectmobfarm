@@ -18,7 +18,7 @@
 				"east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#main" }
 			}
 		},
-		{   "__comment": "Obsidian base",
+		{   "__comment": "Material base",
 			"from": [ 2, 0.1, 2 ],
 			"to": [ 14, 3, 14 ],
 			"faces": {

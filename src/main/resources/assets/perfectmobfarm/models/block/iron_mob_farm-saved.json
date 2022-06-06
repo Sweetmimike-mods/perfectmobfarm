@@ -1,8 +1,0 @@
-{
-	"parent": "block/orientable",
-	"textures": {
-		"front": "perfectmobfarm:block/gold_mob_farm",
-		"side": "perfectmobfarm:block/iron_mob_farm",
-		"top": "perfectmobfarm:block/iron_mob_farm"
-	}
-}

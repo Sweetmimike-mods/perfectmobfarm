@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"facing=north": { "model": "perfectmobfarm:block/diamond_mob_farm" },
+		"facing=south": { "model": "perfectmobfarm:block/diamond_mob_farm", "y": 180 },
+		"facing=west": { "model": "perfectmobfarm:block/diamond_mob_farm", "y": 270 },
+		"facing=east": { "model": "perfectmobfarm:block/diamond_mob_farm", "y": 90 },
+		"facing=up": { "model": "perfectmobfarm:block/diamond_mob_farm" },
+		"facing=down": { "model": "perfectmobfarm:block/diamond_mob_farm" }
+	}
+}

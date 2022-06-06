@@ -75,6 +75,7 @@ public class PerfectMobFarm {
 
         ItemBlockRenderTypes.setRenderLayer(BlockManager.IRON_MOB_FARM.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockManager.GOLD_MOB_FARM.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockManager.DIAMOND_MOB_FARM.get(), RenderType.translucent());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

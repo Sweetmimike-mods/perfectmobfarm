@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#R#",
+    "BPB",
+    "#R#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diamond_block"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "B": {
+      "item": "minecraft:ghast_tear"
+    },
+    "P": {
+      "item": "perfectmobfarm:gold_mob_farm"
+    }
+  },
+  "result": {
+    "item": "perfectmobfarm:diamond_mob_farm",
+    "count": 1
+  }
+}

@@ -1,9 +1,9 @@
 {
 	"parent": "block/orientable",
 	"textures": {
-		"particle": "minecraft:block/gold_block",
-		"material": "minecraft:block/gold_block",
-		"main": "perfectmobfarm:block/gold_mob_farm"
+		"particle": "minecraft:block/diamond_block",
+		"material": "minecraft:block/diamond_block",
+		"main": "perfectmobfarm:block/diamond_mob_farm"
 	},
 	"elements": [
 		{   "__comment": "Glass shell",

@@ -28,6 +28,9 @@ public class BlockManager {
     public static final RegistryObject<Block> GOLD_MOB_FARM = registerBlock("gold_mob_farm",
             () -> new GoldMobFarm(BlockBehaviour.Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(5f).noOcclusion()));
 
+    public static final RegistryObject<Block> DIAMOND_MOB_FARM = registerBlock("diamond_mob_farm",
+            () -> new DiamondMobFarm(BlockBehaviour.Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(5f).noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, PerfectMobFarm.PERFECT_MOB_FARM_TAB);

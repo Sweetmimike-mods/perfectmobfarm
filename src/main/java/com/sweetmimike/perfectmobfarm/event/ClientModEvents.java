@@ -18,6 +18,7 @@ public class ClientModEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), MobFarmRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityManager.GOLD_MOB_FARM_ENTITY.get(), MobFarmRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityManager.DIAMOND_MOB_FARM_ENTITY.get(), MobFarmRenderer::new);
     }
 
 }
