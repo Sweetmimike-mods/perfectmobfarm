@@ -75,7 +75,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     }
 
     public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 60);
+        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 800);
     }
 
     /**

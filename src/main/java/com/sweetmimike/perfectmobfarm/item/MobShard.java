@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class MobShard extends Item {
 
-    public static final int KILL_NEEDED = 2;
+    public static final int KILL_NEEDED = 10;
 
     public MobShard(Properties pProperties) {
         super(pProperties);

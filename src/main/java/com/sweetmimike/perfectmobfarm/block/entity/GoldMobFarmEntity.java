@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class GoldMobFarmEntity extends IronMobFarmEntity {
 
     public GoldMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntityManager.GOLD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 30);
+        super(BlockEntityManager.GOLD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 400);
     }
 
     @Override
