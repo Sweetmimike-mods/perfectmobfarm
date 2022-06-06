@@ -2,6 +2,7 @@ package com.sweetmimike.perfectmobfarm.screen;
 
 import com.sweetmimike.perfectmobfarm.block.IronMobFarm;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
+import com.sweetmimike.perfectmobfarm.screen.slot.MobShardSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +39,7 @@ public class MobFarmMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.farmEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 80, 20));
+            this.addSlot(new MobShardSlot(handler, 0, 80, 20));
         });
 
     }
