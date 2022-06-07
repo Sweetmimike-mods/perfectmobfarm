@@ -18,6 +18,14 @@ You can use this mod in any modpack.
 - **Diamond** Mob farm (10 seconds)
 - **Mob Shard**
 
+## Incoming Feature
+- [ ] More mob farm
+- [ ] Advanced mob shard
+- [ ] Farm upgrade (Speed, additional mob slot, ...)
+- [ ] Mob farm visual improvement
+- [ ] Energy ?
+- Tell me 😉
+
 ## Usage
 This project is under the MIT License.
 
