@@ -1,5 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
+import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -11,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class GoldMobFarmEntity extends IronMobFarmEntity {
 
     public GoldMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntityManager.GOLD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 400);
+        super(BlockEntityManager.GOLD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, CommonConfigs.GOLD_MOB_FARM_COOLDOWN.get());
     }
 
     @Override

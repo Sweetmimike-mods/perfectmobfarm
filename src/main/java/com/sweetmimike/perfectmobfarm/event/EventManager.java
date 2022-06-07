@@ -2,6 +2,7 @@ package com.sweetmimike.perfectmobfarm.event;
 
 import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
+import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +80,7 @@ public class EventManager {
                         String mobName = nbtData.getString(NbtTagsName.MOB);
                         if (mobName.equals(event.getEntity().getName().getString())) {
                             int killed_count = nbtData.getInt(NbtTagsName.KILLED_COUNT);
-                            if (killed_count < MobShard.KILL_NEEDED) {
+                            if (killed_count < CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                                 killed_count = killed_count + 1;
                                 nbtData.putInt(NbtTagsName.KILLED_COUNT, killed_count);
                                 is.setTag(nbtData);

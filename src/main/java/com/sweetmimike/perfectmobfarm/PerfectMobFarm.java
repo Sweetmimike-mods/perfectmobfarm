@@ -3,6 +3,7 @@ package com.sweetmimike.perfectmobfarm;
 import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.block.BlockManager;
 import com.sweetmimike.perfectmobfarm.block.entity.BlockEntityManager;
+import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MenuManager;
@@ -19,7 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -56,6 +59,9 @@ public class PerfectMobFarm {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
 
+        // Register the configs
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPECS, "perfectmobfarm-common.toml");
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -77,7 +83,7 @@ public class PerfectMobFarm {
             ItemProperties.register(ItemManager.MOB_SHARD.get(), new ResourceLocation(PerfectMobFarm.MODID, "completed"), ((pStack, pLevel, pEntity, pSeed) -> {
                 CompoundTag nbtData = pStack.getTag();
                 if (nbtData != null && nbtData.contains(NbtTagsName.KILLED_COUNT)) {
-                    return nbtData.getInt(NbtTagsName.KILLED_COUNT) == MobShard.KILL_NEEDED ? 1.0F : 0.0F;
+                    return nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get() ? 1.0F : 0.0F;
                 }
                 return 0.0F;
             }));

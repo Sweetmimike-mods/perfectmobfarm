@@ -1,6 +1,7 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
 import com.mojang.logging.LogUtils;
+import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmMenu;
@@ -57,7 +58,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) {
             ItemStack stack = this.getStackInSlot(slot);
             if (stack.getItem() == ItemManager.MOB_SHARD.get() && stack.getTag() != null
-                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == MobShard.KILL_NEEDED) {
+                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 isActive = true;
             } else {
                 isActive = false;
@@ -75,7 +76,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     }
 
     public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, 800);
+        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, CommonConfigs.IRON_MOB_FARM_COOLDOWN.get());
     }
 
     /**
@@ -100,7 +101,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() == ItemManager.MOB_SHARD.get()) {
             CompoundTag nbtData = mobShard.getTag();
-            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == MobShard.KILL_NEEDED) {
+            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 BlockEntity container = getNearbyContainer();
                 if (container == null) {
                     LOGGER.debug("GENERATE-DROP ~ No container found");

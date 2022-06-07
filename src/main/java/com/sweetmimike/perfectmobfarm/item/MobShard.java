@@ -1,5 +1,6 @@
 package com.sweetmimike.perfectmobfarm.item;
 
+import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -18,8 +19,6 @@ import java.util.List;
  */
 public class MobShard extends Item {
 
-    public static final int KILL_NEEDED = 10;
-
     public MobShard(Properties pProperties) {
         super(pProperties);
     }
@@ -36,7 +35,7 @@ public class MobShard extends Item {
                 int currentDurability = maxDamage - pStack.getDamageValue();
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC + mobName));
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC +
-                        "Killed : " + killed_count + "/" + KILL_NEEDED));
+                        "Killed : " + killed_count + "/" + CommonConfigs.MOB_SHARD_KILL_NEEDED.get()));
             }
         }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
