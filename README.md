@@ -1,3 +1,4 @@
+
 # Perfect Mob farm
 Hello, I'm **Sweetmimike** and this is the presentation of my mod **Perfect Mob Farm**
 
@@ -23,8 +24,9 @@ You can use this mod in any modpack.
 - [ ] Advanced mob shard
 - [ ] Farm upgrade (Speed, additional mob slot, ...)
 - [ ] Mob farm visual improvement
+- [ ] Custom config
 - [ ] Energy ?
-- Tell me 😉
+- [ ] Tell me 😉
 
 ## Usage
 This project is under the MIT License.
