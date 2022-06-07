@@ -27,16 +27,14 @@ displayName="Perfect Mob Farm" #mandatory
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="perfectmobfarm.png" #optional
+logoFile="mobfarm-banner.png" #optional
 # A text field displayed in the mod UI
 # credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
 authors="Sweetmimike" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Perfect Mob Farm is a simple that adds mob farm blocks.
-
-Thanks to these blocks, you can generate loots from the mob you want.
+Perfect Mob Farm is a simple that adds mob farm blocks used to generate loot passively.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.perfectmobfarm]] #optional
