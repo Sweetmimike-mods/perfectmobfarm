@@ -2,7 +2,6 @@ package com.sweetmimike.perfectmobfarm.block.entity;
 
 import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
-import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmMenu;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
@@ -20,6 +19,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,12 +47,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     private int cooldown;
     private int timer;
     private boolean isActive;
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private Entity entityToDisplay;
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -67,7 +65,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
             setChanged();
         }
     };
-
+    private Entity entityToDisplay;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected IronMobFarmEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState, int cooldown) {
@@ -122,6 +120,13 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
                 AtomicBoolean canBePlaced = new AtomicBoolean(false);
                 container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
                     for (ItemStack itemStack : generated) {
+
+                        // Air can be generated from loot table and needs to be count as an item
+                        // If it only generates Air, then mob shard should be damaged
+                        if (itemStack.getItem() == Items.AIR) {
+                            canBePlaced.set(true);
+                            continue;
+                        }
                         ItemStack remainingStack = ItemHandlerHelper.insertItemStacked(iItemHandler, itemStack, false);
 
                         // If the counts are different, then at least one item as been placed
