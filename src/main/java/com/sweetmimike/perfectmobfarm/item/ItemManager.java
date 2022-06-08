@@ -18,6 +18,9 @@ public class ItemManager {
     public static final RegistryObject<Item> MOB_SHARD = ITEMS.register("mob_shard",
             () -> new MobShard(new Item.Properties().tab(PerfectMobFarm.PERFECT_MOB_FARM_TAB).durability(256)));
 
+    public static final RegistryObject<Item> ADVANCED_MOB_SHARD = ITEMS.register("advanced_mob_shard",
+            () -> new AdvancedMobShard(new Item.Properties().tab(PerfectMobFarm.PERFECT_MOB_FARM_TAB).durability(1024)));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

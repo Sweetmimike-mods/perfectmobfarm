@@ -2,19 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     " # ",
-    "#D#",
+    "RDR",
     " # "
   ],
   "key": {
     "#": {
-      "item": "minecraft:blaze_powder"
+      "item": "minecraft:ender_eye"
     },
     "D": {
       "item": "minecraft:diamond"
+    },
+    "R": {
+      "item": "perfectmobfarm:mob_shard"
     }
   },
   "result": {
-    "item": "perfectmobfarm:mob_shard",
+    "item": "perfectmobfarm:advanced_mob_shard",
     "count": 1
   }
 }

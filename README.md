@@ -24,7 +24,7 @@ You can use this mod in any modpack.
 - [ ] Advanced mob shard
 - [ ] Farm upgrade (Speed, additional mob slot, ...)
 - [ ] Mob farm visual improvement
-- [ ] Custom config
+- [X] Custom config
 - [ ] Energy ?
 - [ ] Tell me 😉
 

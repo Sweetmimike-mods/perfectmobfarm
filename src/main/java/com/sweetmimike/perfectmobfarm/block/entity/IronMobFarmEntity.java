@@ -57,7 +57,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             ItemStack stack = this.getStackInSlot(slot);
-            if (stack.getItem() == ItemManager.MOB_SHARD.get() && stack.getTag() != null
+            if (stack.getItem() instanceof MobShard && stack.getTag() != null
                     && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 isActive = true;
             } else {
@@ -97,9 +97,8 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * Generate drops from the mob type captured by the mob shard in the mob farm.
      */
     public void generateDrop() {
-        LOGGER.debug("CALL GENERATE DROP FROM " + this.getClass().getName());
         ItemStack mobShard = itemHandler.getStackInSlot(0);
-        if (mobShard.getItem() == ItemManager.MOB_SHARD.get()) {
+        if (mobShard.getItem() instanceof MobShard) {
             CompoundTag nbtData = mobShard.getTag();
             if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 BlockEntity container = getNearbyContainer();
@@ -117,6 +116,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
                 LootContext ctx = builder.create(LootContextParamSets.EMPTY);
                 List<ItemStack> generated = lt.getRandomItems(ctx);
+                LOGGER.debug("ITEMS GENERATED ~~ " + generated.toString());
 
                 // Boolean value to determine if we can place at least one of the generated itemStacks
                 AtomicBoolean canBePlaced = new AtomicBoolean(false);

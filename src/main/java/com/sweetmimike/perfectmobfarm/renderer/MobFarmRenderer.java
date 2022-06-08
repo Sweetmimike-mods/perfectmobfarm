@@ -43,7 +43,7 @@ public class MobFarmRenderer implements BlockEntityRenderer<IronMobFarmEntity> {
         }
         ItemStack itemHeld = handler.getStackInSlot(0);
 
-        if (itemHeld.getItem() == ItemManager.MOB_SHARD.get()) {
+        if (itemHeld.getItem() instanceof MobShard) {
             CompoundTag nbtTag = itemHeld.getTag();
             if (nbtTag != null && nbtTag.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 EntityType type = EntityType.byString(nbtTag.getString(NbtTagsName.MOB_ID)).orElse(null);

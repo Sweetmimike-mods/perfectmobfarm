@@ -5,7 +5,6 @@ import com.sweetmimike.perfectmobfarm.block.BlockManager;
 import com.sweetmimike.perfectmobfarm.block.entity.BlockEntityManager;
 import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
-import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MenuManager;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmScreen;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
@@ -81,6 +80,14 @@ public class PerfectMobFarm {
 
         event.enqueueWork(() -> {
             ItemProperties.register(ItemManager.MOB_SHARD.get(), new ResourceLocation(PerfectMobFarm.MODID, "completed"), ((pStack, pLevel, pEntity, pSeed) -> {
+                CompoundTag nbtData = pStack.getTag();
+                if (nbtData != null && nbtData.contains(NbtTagsName.KILLED_COUNT)) {
+                    return nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get() ? 1.0F : 0.0F;
+                }
+                return 0.0F;
+            }));
+
+            ItemProperties.register(ItemManager.ADVANCED_MOB_SHARD.get(), new ResourceLocation(PerfectMobFarm.MODID, "completed"), ((pStack, pLevel, pEntity, pSeed) -> {
                 CompoundTag nbtData = pStack.getTag();
                 if (nbtData != null && nbtData.contains(NbtTagsName.KILLED_COUNT)) {
                     return nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get() ? 1.0F : 0.0F;
