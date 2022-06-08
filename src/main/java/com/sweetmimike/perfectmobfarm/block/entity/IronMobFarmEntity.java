@@ -14,7 +14,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,6 +34,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -40,6 +45,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -48,9 +54,24 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     private static final Logger LOGGER = LogUtils.getLogger();
+    /**
+     * Time needed by the farm to generate drops
+     */
     private int cooldown;
+
+    /**
+     * Timer that counts ticks
+     */
     private int timer;
+
+    /**
+     * Boolean value that determines if the farm is currently generating loots or not
+     */
     private boolean isActive;
+
+    /**
+     * ItemStackHandler
+     */
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -65,7 +86,25 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
             setChanged();
         }
     };
+
+    /**
+     * Fake player used to generate loot
+     */
+    private LivingEntity fakePlayer;
+
+    /**
+     * Entity to display inside the farm
+     */
     private Entity entityToDisplay;
+
+    /**
+     * Mob used to create loots
+     */
+    private Mob mobToLoot;
+
+    /**
+     * LazyItemHandler
+     */
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected IronMobFarmEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState, int cooldown) {
@@ -109,10 +148,18 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
                 LootTables ltManager = this.getLevel().getServer().getLootTables();
                 LootTable lt = ltManager.get(loc);
-                Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
-                LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, position);
 
-                LootContext ctx = builder.create(LootContextParamSets.EMPTY);
+                Optional<EntityType<?>> optEntityType = EntityType.byString(nbtData.getString(NbtTagsName.MOB_ID));
+                if (!optEntityType.isPresent()) {
+                    LOGGER.error("In generateDrop(): Unable to get entity type.");
+                    return;
+                }
+
+                EntityType entityType = optEntityType.get();
+                Mob mob = getOrCreateMobToLoot(entityType);
+
+                LootContext.Builder builder = constructContextBuilder(mob);
+                LootContext ctx = builder.create(LootContextParamSets.ENTITY);
                 List<ItemStack> generated = lt.getRandomItems(ctx);
                 LOGGER.debug("ITEMS GENERATED ~~ " + generated.toString());
 
@@ -161,6 +208,26 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
             return blockEntity;
         }
         return null;
+    }
+
+    /**
+     * Construct a LootContext Builder.
+     *
+     * @param mob Mob from which drops come
+     * @return A LootContext Builder
+     */
+    private LootContext.Builder constructContextBuilder(Mob mob) {
+        Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
+        Player fakePlayer = (Player) getOrCreateFakePlayer();
+
+        LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level))
+                .withParameter(LootContextParams.ORIGIN, position)
+                .withParameter(LootContextParams.THIS_ENTITY, mob)
+                .withParameter(LootContextParams.DAMAGE_SOURCE, DamageSource.playerAttack(fakePlayer))
+                .withParameter(LootContextParams.KILLER_ENTITY, fakePlayer)
+                .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer);
+
+        return builder;
     }
 
     /**
@@ -224,5 +291,32 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     public void setEntityToDisplay(Entity entityToDisplay) {
         this.entityToDisplay = entityToDisplay;
+    }
+
+    /**
+     * FakePlayer getter.
+     *
+     * @return If fakePlayer is null returns a new one, otherwise fakePlayer.
+     */
+    private LivingEntity getOrCreateFakePlayer() {
+        if (fakePlayer == null) {
+            fakePlayer = FakePlayerFactory.getMinecraft((ServerLevel) this.level);
+        }
+        return fakePlayer;
+    }
+
+    /**
+     * Check current mobToLoot and create a new one or return the current one depending on the state.
+     *
+     * @param entityType Entity type to compare
+     * @return If mobToLoot is null, create a new one. If its type is different from the passed one, create a new one. Otherwise return the current.
+     */
+    private Mob getOrCreateMobToLoot(EntityType entityType) {
+        if (mobToLoot == null) {
+            mobToLoot = (Mob) entityType.create(this.level);
+        } else if (mobToLoot.getType() != entityType) {
+            mobToLoot = (Mob) entityType.create(this.level);
+        }
+        return mobToLoot;
     }
 }
