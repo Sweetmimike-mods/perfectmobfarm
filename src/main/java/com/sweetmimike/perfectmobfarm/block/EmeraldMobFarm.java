@@ -1,23 +1,22 @@
 package com.sweetmimike.perfectmobfarm.block;
 
-import com.sweetmimike.perfectmobfarm.block.entity.DiamondMobFarmEntity;
-import com.sweetmimike.perfectmobfarm.block.entity.GoldMobFarmEntity;
+import com.sweetmimike.perfectmobfarm.block.entity.EmeraldMobFarmEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Diamond Mob Farm block
+ * Emerald Mob Farm block
  */
-public class DiamondMobFarm extends IronMobFarm {
-    public DiamondMobFarm(Properties properties) {
+public class EmeraldMobFarm extends IronMobFarm {
+    public EmeraldMobFarm(Properties properties) {
         super(properties);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new DiamondMobFarmEntity(pPos, pState);
+        return new EmeraldMobFarmEntity(pPos, pState);
     }
 }

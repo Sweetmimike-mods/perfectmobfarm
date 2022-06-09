@@ -3,6 +3,8 @@
   "values": [
     "perfectmobfarm:iron_mob_farm",
     "perfectmobfarm:gold_mob_farm",
-    "perfectmobfarm:diamond_mob_farm"
+    "perfectmobfarm:diamond_mob_farm",
+    "perfectmobfarm:emerald_mob_farm",
+    "perfectmobfarm:netherite_mob_farm"
   ]
 }

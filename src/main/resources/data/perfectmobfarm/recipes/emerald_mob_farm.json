@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#R#",
+    "BPB",
+    "#R#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:emerald"
+    },
+    "R": {
+      "item": "minecraft:gunpowder"
+    },
+    "B": {
+      "item": "minecraft:magma_cream"
+    },
+    "P": {
+      "item": "perfectmobfarm:diamond_mob_farm"
+    }
+  },
+  "result": {
+    "item": "perfectmobfarm:emerald_mob_farm",
+    "count": 1
+  }
+}

@@ -216,7 +216,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * @param mob Mob from which drops come
      * @return A LootContext Builder
      */
-    private LootContext.Builder constructContextBuilder(Mob mob) {
+    protected LootContext.Builder constructContextBuilder(Mob mob) {
         Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
         Player fakePlayer = (Player) getOrCreateFakePlayer();
 
@@ -298,7 +298,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      *
      * @return If fakePlayer is null returns a new one, otherwise fakePlayer.
      */
-    private LivingEntity getOrCreateFakePlayer() {
+    protected LivingEntity getOrCreateFakePlayer() {
         if (fakePlayer == null) {
             fakePlayer = FakePlayerFactory.getMinecraft((ServerLevel) this.level);
         }

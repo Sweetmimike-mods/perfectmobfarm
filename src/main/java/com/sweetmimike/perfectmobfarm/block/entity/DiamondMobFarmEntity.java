@@ -7,7 +7,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Entity for the Gold Mob Farm block
+ * Entity for the Diamond Mob Farm block
  */
 public class DiamondMobFarmEntity extends IronMobFarmEntity {
 

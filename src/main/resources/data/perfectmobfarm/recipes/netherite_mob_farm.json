@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#V#",
+    "BPB",
+    "#R#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "R": {
+      "item": "minecraft:ender_eye"
+    },
+    "B": {
+      "item": "minecraft:quartz"
+    },
+    "P": {
+      "item": "perfectmobfarm:emerald_mob_farm"
+    },
+    "V": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "item": "perfectmobfarm:netherite_mob_farm",
+    "count": 1
+  }
+}

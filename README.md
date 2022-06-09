@@ -21,7 +21,7 @@ You can use this mod in any modpack.
 
 ## Incoming Feature
 - [ ] More mob farm
-- [ ] Advanced mob shard
+- [X] Advanced mob shard
 - [ ] Farm upgrade (Speed, additional mob slot, ...)
 - [ ] Mob farm visual improvement
 - [X] Custom config
