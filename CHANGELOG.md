@@ -1,6 +1,8 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+- Fix crashes on dedicated servers caused by client setup
+
 ## [1.1.0] - 23.06.2022
 
 ### Added
