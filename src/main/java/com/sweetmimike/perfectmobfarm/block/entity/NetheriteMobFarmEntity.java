@@ -1,6 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 public class NetheriteMobFarmEntity extends IronMobFarmEntity {
 
     public NetheriteMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntityManager.NETHERITE_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, CommonConfigs.NETHERITE_MOB_FARM_COOLDOWN.get());
+        super(BlockEntityManager.NETHERITE_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, ServerConfigs.NETHERITE_MOB_FARM_COOLDOWN.get());
     }
 
     @Override

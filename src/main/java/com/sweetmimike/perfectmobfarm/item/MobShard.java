@@ -1,6 +1,6 @@
 package com.sweetmimike.perfectmobfarm.item;
 
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -35,9 +35,19 @@ public class MobShard extends Item {
                 int currentDurability = maxDamage - pStack.getDamageValue();
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC + mobName));
                 pTooltipComponents.add(new TextComponent(ChatFormatting.GRAY + "" + ChatFormatting.ITALIC +
-                        "Killed : " + killed_count + "/" + CommonConfigs.MOB_SHARD_KILL_NEEDED.get()));
+                        "Killed : " + killed_count + "/" + ServerConfigs.MOB_SHARD_KILL_NEEDED.get()));
             }
         }
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return ServerConfigs.MOB_SHARD_DURABILITY.get();
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+        return true;
     }
 }

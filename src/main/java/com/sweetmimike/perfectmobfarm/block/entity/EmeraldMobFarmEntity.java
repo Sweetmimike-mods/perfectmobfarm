@@ -1,6 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.Vec3;
 public class EmeraldMobFarmEntity extends IronMobFarmEntity {
 
     public EmeraldMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        super(BlockEntityManager.EMERALD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, CommonConfigs.EMERALD_MOB_FARM_COOLDOWN.get());
+        super(BlockEntityManager.EMERALD_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, ServerConfigs.EMERALD_MOB_FARM_COOLDOWN.get());
     }
 
     @Override

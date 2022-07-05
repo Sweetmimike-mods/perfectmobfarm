@@ -3,13 +3,9 @@ package com.sweetmimike.perfectmobfarm;
 import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.block.BlockManager;
 import com.sweetmimike.perfectmobfarm.block.entity.BlockEntityManager;
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import com.sweetmimike.perfectmobfarm.item.ItemManager;
 import com.sweetmimike.perfectmobfarm.screen.MenuManager;
-import com.sweetmimike.perfectmobfarm.screen.MobFarmScreen;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -46,6 +42,9 @@ public class PerfectMobFarm {
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // Register the configs
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPECS, "perfectmobfarm-server.toml");
+
         ItemManager.register(eventBus);
         BlockManager.register(eventBus);
         BlockEntityManager.register(eventBus);
@@ -53,9 +52,6 @@ public class PerfectMobFarm {
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
-
-        // Register the configs
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPECS, "perfectmobfarm-common.toml");
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

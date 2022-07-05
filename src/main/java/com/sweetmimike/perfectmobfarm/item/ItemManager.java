@@ -1,7 +1,6 @@
 package com.sweetmimike.perfectmobfarm.item;
 
 import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

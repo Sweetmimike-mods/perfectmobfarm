@@ -1,7 +1,7 @@
 package com.sweetmimike.perfectmobfarm.block.entity;
 
 import com.mojang.logging.LogUtils;
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.screen.MobFarmMenu;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
@@ -77,7 +77,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) {
             ItemStack stack = this.getStackInSlot(slot);
             if (stack.getItem() instanceof MobShard && stack.getTag() != null
-                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
+                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 isActive = true;
             } else {
                 isActive = false;
@@ -113,7 +113,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     }
 
     public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
-        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, CommonConfigs.IRON_MOB_FARM_COOLDOWN.get());
+        this(BlockEntityManager.IRON_MOB_FARM_ENTITY.get(), pWorldPosition, pBlockState, ServerConfigs.IRON_MOB_FARM_COOLDOWN.get());
     }
 
     /**
@@ -136,8 +136,8 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     public void generateDrop() {
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() instanceof MobShard) {
-            CompoundTag nbtData = mobShard.getTag();
-            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
+            CompoundTag nbtData = mobShard.hasTag() ? mobShard.getTag() : null;
+            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 BlockEntity container = getNearbyContainer();
                 if (container == null) {
                     LOGGER.debug("GENERATE-DROP ~ No container found");
@@ -185,8 +185,8 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
                 // If no item can be placed, then stop damaging the mob shard
                 if (canBePlaced.get()) {
-                    boolean toDelete = mobShard.hurt(1, level.getRandom(), null);
-                    if (toDelete) {
+                    mobShard.setDamageValue(mobShard.getDamageValue() + 1);
+                    if(mobShard.getMaxDamage() <= mobShard.getDamageValue()) {
                         mobShard.setCount(0);
                     }
                 }
