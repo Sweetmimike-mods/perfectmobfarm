@@ -5,8 +5,7 @@ import com.mojang.logging.LogUtils;
 import com.mojang.math.Vector3f;
 import com.sweetmimike.perfectmobfarm.block.IronMobFarm;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
-import com.sweetmimike.perfectmobfarm.item.ItemManager;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.client.Minecraft;
@@ -45,7 +44,7 @@ public class MobFarmRenderer implements BlockEntityRenderer<IronMobFarmEntity> {
 
         if (itemHeld.getItem() instanceof MobShard) {
             CompoundTag nbtTag = itemHeld.getTag();
-            if (nbtTag != null && nbtTag.getInt(NbtTagsName.KILLED_COUNT) == CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
+            if (nbtTag != null && nbtTag.getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 EntityType type = EntityType.byString(nbtTag.getString(NbtTagsName.MOB_ID)).orElse(null);
                 if (type == null) {
                     return;

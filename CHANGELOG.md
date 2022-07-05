@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 - Fix crashes on dedicated servers caused by client setup
+- The mod now use a server configuration
+- Add possibility to customize Mob Shard durability
 
 ## [1.1.0] - 23.06.2022
 

@@ -2,13 +2,11 @@ package com.sweetmimike.perfectmobfarm.event;
 
 import com.mojang.logging.LogUtils;
 import com.sweetmimike.perfectmobfarm.PerfectMobFarm;
-import com.sweetmimike.perfectmobfarm.config.CommonConfigs;
+import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import com.sweetmimike.perfectmobfarm.item.MobShard;
 import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
@@ -44,7 +42,7 @@ public class EventManager {
                 }
                 ItemStack shardStack = event.getItemStack();
                 CompoundTag nbtTag = null;
-                if (shardStack.getTag().get(NbtTagsName.MOB) == null) {
+                if (!shardStack.hasTag() || shardStack.getTag().get(NbtTagsName.MOB) == null) {
                     nbtTag = new CompoundTag();
 //                    CompoundTag nbtMobTag = new CompoundTag();
 //                    mob.save(nbtMobTag);
@@ -80,7 +78,7 @@ public class EventManager {
                         String mobName = nbtData.getString(NbtTagsName.MOB);
                         if (mobName.equals(event.getEntity().getName().getString())) {
                             int killed_count = nbtData.getInt(NbtTagsName.KILLED_COUNT);
-                            if (killed_count < CommonConfigs.MOB_SHARD_KILL_NEEDED.get()) {
+                            if (killed_count < ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                                 killed_count = killed_count + 1;
                                 nbtData.putInt(NbtTagsName.KILLED_COUNT, killed_count);
                                 is.setTag(nbtData);

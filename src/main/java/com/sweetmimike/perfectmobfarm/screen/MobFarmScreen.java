@@ -14,7 +14,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 /**
  * Mob farm screen
  */
-@OnlyIn(Dist.CLIENT)
 public class MobFarmScreen extends AbstractContainerScreen<MobFarmMenu> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(PerfectMobFarm.MODID, "textures/gui/mob_farm_gui.png");
