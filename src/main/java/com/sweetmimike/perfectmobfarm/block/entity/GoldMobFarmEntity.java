@@ -3,7 +3,6 @@ package com.sweetmimike.perfectmobfarm.block.entity;
 import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -17,6 +16,6 @@ public class GoldMobFarmEntity extends IronMobFarmEntity {
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Gold Mob Farm");
+        return Component.literal("Gold Mob Farm");
     }
 }

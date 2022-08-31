@@ -42,7 +42,7 @@ public class IronMobFarm extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof IronMobFarmEntity) {
-                NetworkHooks.openGui(((ServerPlayer) pPlayer), (IronMobFarmEntity) entity, pPos);
+                NetworkHooks.openScreen(((ServerPlayer) pPlayer), (IronMobFarmEntity) entity, pPos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
@@ -61,14 +61,12 @@ public class IronMobFarm extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-
         if (pState != pNewState) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof IronMobFarmEntity farmEntity) {
                 farmEntity.drop();
             }
         }
-
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 

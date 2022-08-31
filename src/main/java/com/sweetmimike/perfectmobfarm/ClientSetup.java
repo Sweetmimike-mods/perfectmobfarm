@@ -34,12 +34,6 @@ public class ClientSetup {
     public static void setup(FMLClientSetupEvent event) {
         MenuScreens.register(MenuManager.MOB_FARM_MENU.get(), MobFarmScreen::new);
 
-        ItemBlockRenderTypes.setRenderLayer(BlockManager.IRON_MOB_FARM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockManager.GOLD_MOB_FARM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockManager.DIAMOND_MOB_FARM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockManager.EMERALD_MOB_FARM.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockManager.NETHERITE_MOB_FARM.get(), RenderType.cutout());
-
         event.enqueueWork(() -> {
             ItemProperties.register(ItemManager.MOB_SHARD.get(), new ResourceLocation(PerfectMobFarm.MODID, "completed"), ((pStack, pLevel, pEntity, pSeed) -> {
                 CompoundTag nbtData = pStack.getTag();

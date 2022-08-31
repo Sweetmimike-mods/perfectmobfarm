@@ -8,7 +8,6 @@ import com.sweetmimike.perfectmobfarm.utils.NbtTagsName;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -34,9 +33,9 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -45,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -58,17 +58,14 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * Time needed by the farm to generate drops
      */
     private int cooldown;
-
     /**
      * Timer that counts ticks
      */
     private int timer;
-
     /**
      * Boolean value that determines if the farm is currently generating loots or not
      */
     private boolean isActive;
-
     /**
      * ItemStackHandler
      */
@@ -76,32 +73,24 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             ItemStack stack = this.getStackInSlot(slot);
-            if (stack.getItem() instanceof MobShard && stack.getTag() != null
-                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
-                isActive = true;
-            } else {
-                isActive = false;
-            }
+            isActive = stack.getItem() instanceof MobShard && stack.getTag() != null
+                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get();
             timer = 0;
             setChanged();
         }
     };
-
     /**
      * Fake player used to generate loot
      */
     private LivingEntity fakePlayer;
-
     /**
      * Entity to display inside the farm
      */
     private Entity entityToDisplay;
-
     /**
      * Mob used to create loots
      */
     private Mob mobToLoot;
-
     /**
      * LazyItemHandler
      */
@@ -150,22 +139,22 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
                 LootTable lt = ltManager.get(loc);
 
                 Optional<EntityType<?>> optEntityType = EntityType.byString(nbtData.getString(NbtTagsName.MOB_ID));
-                if (!optEntityType.isPresent()) {
+                if (optEntityType.isEmpty()) {
                     LOGGER.error("In generateDrop(): Unable to get entity type.");
                     return;
                 }
 
-                EntityType entityType = optEntityType.get();
+                EntityType<?> entityType = optEntityType.get();
                 Mob mob = getOrCreateMobToLoot(entityType);
 
                 LootContext.Builder builder = constructContextBuilder(mob);
                 LootContext ctx = builder.create(LootContextParamSets.ENTITY);
                 List<ItemStack> generated = lt.getRandomItems(ctx);
-                LOGGER.debug("ITEMS GENERATED ~~ " + generated.toString());
+                LOGGER.debug("ITEMS GENERATED ~~ " + generated);
 
                 // Boolean value to determine if we can place at least one of the generated itemStacks
                 AtomicBoolean canBePlaced = new AtomicBoolean(false);
-                container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(iItemHandler -> {
+                container.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
                     for (ItemStack itemStack : generated) {
 
                         // Air can be generated from loot table and needs to be count as an item
@@ -186,7 +175,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
                 // If no item can be placed, then stop damaging the mob shard
                 if (canBePlaced.get()) {
                     mobShard.setDamageValue(mobShard.getDamageValue() + 1);
-                    if(mobShard.getMaxDamage() <= mobShard.getDamageValue()) {
+                    if (mobShard.getMaxDamage() <= mobShard.getDamageValue()) {
                         mobShard.setCount(0);
                     }
                 }
@@ -203,7 +192,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * @return The block entity below
      */
     public BlockEntity getNearbyContainer() {
-        BlockEntity blockEntity = getLevel().getBlockEntity(getBlockPos().below());
+        BlockEntity blockEntity = Objects.requireNonNull(getLevel()).getBlockEntity(getBlockPos().below());
         if (blockEntity instanceof Container) {
             return blockEntity;
         }
@@ -220,14 +209,16 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         Vec3 position = new Vec3(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
         Player fakePlayer = (Player) getOrCreateFakePlayer();
 
-        LootContext.Builder builder = (new LootContext.Builder((ServerLevel) this.level))
+        if (this.level == null) {
+            return null;
+        }
+
+        return (new LootContext.Builder((ServerLevel) this.level))
                 .withParameter(LootContextParams.ORIGIN, position)
                 .withParameter(LootContextParams.THIS_ENTITY, mob)
                 .withParameter(LootContextParams.DAMAGE_SOURCE, DamageSource.playerAttack(fakePlayer))
                 .withParameter(LootContextParams.KILLER_ENTITY, fakePlayer)
                 .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer);
-
-        return builder;
     }
 
     /**
@@ -236,18 +227,19 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      */
     public void drop() {
         ItemStack itemStack = itemHandler.getStackInSlot(0);
-        Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemStack);
+        if (level != null)
+            Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemStack);
     }
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Iron Mob Farm");
+        return Component.literal("Iron Mob Farm");
     }
 
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
         return super.getCapability(cap);
@@ -312,9 +304,9 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * @return If mobToLoot is null, create a new one. If its type is different from the passed one, create a new one. Otherwise return the current.
      */
     private Mob getOrCreateMobToLoot(EntityType entityType) {
-        if (mobToLoot == null) {
-            mobToLoot = (Mob) entityType.create(this.level);
-        } else if (mobToLoot.getType() != entityType) {
+        if (level == null) return mobToLoot;
+
+        if (mobToLoot == null || mobToLoot.getType() != entityType) {
             mobToLoot = (Mob) entityType.create(this.level);
         }
         return mobToLoot;

@@ -1,5 +1,6 @@
 {
 	"parent": "block/orientable",
+	"render_type": "cutout",
 	"textures": {
 		"particle": "minecraft:block/diamond_block",
 		"material": "minecraft:block/diamond_block",

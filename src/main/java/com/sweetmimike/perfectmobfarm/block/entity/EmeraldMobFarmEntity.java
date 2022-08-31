@@ -3,7 +3,6 @@ package com.sweetmimike.perfectmobfarm.block.entity;
 import com.sweetmimike.perfectmobfarm.config.ServerConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,7 +27,7 @@ public class EmeraldMobFarmEntity extends IronMobFarmEntity {
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Emerald Mob Farm");
+        return Component.literal("Emerald Mob Farm");
     }
 
     @Override

@@ -18,7 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import org.slf4j.Logger;
 
@@ -36,7 +36,7 @@ public class MobFarmRenderer implements BlockEntityRenderer<IronMobFarmEntity> {
     @Override
     public void render(IronMobFarmEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 
-        IItemHandler handler = pBlockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+        IItemHandler handler = pBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
         if (handler == null) {
             return;
         }
@@ -45,7 +45,7 @@ public class MobFarmRenderer implements BlockEntityRenderer<IronMobFarmEntity> {
         if (itemHeld.getItem() instanceof MobShard) {
             CompoundTag nbtTag = itemHeld.getTag();
             if (nbtTag != null && nbtTag.getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
-                EntityType type = EntityType.byString(nbtTag.getString(NbtTagsName.MOB_ID)).orElse(null);
+                EntityType<?> type = EntityType.byString(nbtTag.getString(NbtTagsName.MOB_ID)).orElse(null);
                 if (type == null) {
                     return;
                 }

@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class MenuManager {
 
     public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.CONTAINERS, PerfectMobFarm.MODID);
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, PerfectMobFarm.MODID);
 
     public static final RegistryObject<MenuType<MobFarmMenu>> MOB_FARM_MENU =
             registerMenuType(MobFarmMenu::new, "mob_farm_menu");

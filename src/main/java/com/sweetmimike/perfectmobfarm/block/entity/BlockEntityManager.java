@@ -10,7 +10,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class BlockEntityManager {
     public static final List<RegistryObject> MOB_FARM_ENTITIES_LIST = new ArrayList<>();
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, PerfectMobFarm.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, PerfectMobFarm.MODID);
 
     public static final RegistryObject<BlockEntityType<IronMobFarmEntity>> IRON_MOB_FARM_ENTITY = BLOCK_ENTITIES.register("iron_mob_farm_entity",
             () -> Builder.of(IronMobFarmEntity::new, BlockManager.IRON_MOB_FARM.get()).build(null));
