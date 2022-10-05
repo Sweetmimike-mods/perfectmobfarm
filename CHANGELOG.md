@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+### [2.0.0] - October 2022
+
+#### Added
+- Migrate to 1.19.2
+- Add a progress bar in the mob farm menu
+
+
+
 ### [1.2.0] - 07.07.2022
 
 #### Added

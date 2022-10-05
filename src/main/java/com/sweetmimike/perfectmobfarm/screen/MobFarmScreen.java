@@ -8,15 +8,13 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Mob farm screen
  */
 public class MobFarmScreen extends AbstractContainerScreen<MobFarmMenu> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(PerfectMobFarm.MODID, "textures/gui/mob_farm_gui.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(PerfectMobFarm.MODID, "textures/gui/mobfarm-gui-2.png");
 
     public MobFarmScreen(MobFarmMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -35,6 +33,13 @@ public class MobFarmScreen extends AbstractContainerScreen<MobFarmMenu> {
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+
+        this.renderProgressBar(pPoseStack, x, y);
+    }
+
+    public void renderProgressBar(PoseStack pPoseStack, int x, int y) {
+        int progressed = menu.getProgress();
+        this.blit(pPoseStack, x + 152, y + 47 - progressed, 177, 47 - progressed, 4, 41);
     }
 
     @Override

@@ -7,12 +7,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 /**
  * Mob Farm menu displayed when right clicking on a mob farm block
@@ -25,15 +26,20 @@ public class MobFarmMenu extends AbstractContainerMenu {
     /** Current level */
     private final Level level;
 
+    /** Data passed from BlockEntity to menu */
+    private final ContainerData data;
+
     public MobFarmMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public MobFarmMenu(int pContainerId, Inventory inv, BlockEntity entity) {
+    public MobFarmMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuManager.MOB_FARM_MENU.get(), pContainerId);
         checkContainerSize(inv, 1);
         farmEntity = ((IronMobFarmEntity) entity);
         this.level = inv.player.level;
+        this.data = data;
+        this.addDataSlots(data);
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -41,7 +47,14 @@ public class MobFarmMenu extends AbstractContainerMenu {
         this.farmEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new MobShardSlot(handler, 0, 80, 20));
         });
+    }
 
+    public int getProgress() {
+        int current = this.data.get(0);
+        int max = this.data.get(1);
+        int progressBarSize = 41;
+
+        return max != 0 ? current * progressBarSize / max : 0;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
@@ -119,5 +132,4 @@ public class MobFarmMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 109));
         }
     }
-
 }

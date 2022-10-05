@@ -21,8 +21,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,6 +56,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
 
     private static final Logger LOGGER = LogUtils.getLogger();
+    protected final ContainerData data;
     /**
      * Time needed by the farm to generate drops
      */
@@ -61,7 +64,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     /**
      * Timer that counts ticks
      */
-    private int timer;
+    private int timer = 0;
     /**
      * Boolean value that determines if the farm is currently generating loots or not
      */
@@ -73,8 +76,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             ItemStack stack = this.getStackInSlot(slot);
-            isActive = stack.getItem() instanceof MobShard && stack.getTag() != null
-                    && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get();
+            isActive = stack.getItem() instanceof MobShard && stack.getTag() != null && stack.getTag().getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get();
             timer = 0;
             setChanged();
         }
@@ -99,6 +101,31 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     protected IronMobFarmEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState, int cooldown) {
         super(pType, pWorldPosition, pBlockState);
         this.cooldown = cooldown;
+
+        // Create a new container data that will be passed to the menu, in order to display the progress bar
+        this.data = new ContainerData() {
+            @Override
+            public int get(int index) {
+                return switch (index) {
+                    case 0 -> IronMobFarmEntity.this.timer;
+                    case 1 -> IronMobFarmEntity.this.cooldown;
+                    default -> 0;
+                };
+            }
+
+            @Override
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0 -> IronMobFarmEntity.this.timer = value;
+                    case 1 -> IronMobFarmEntity.this.cooldown = value;
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
     }
 
     public IronMobFarmEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -109,12 +136,14 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
      * Function called each tick.
      * If the mob farm is active, then call generate drop.
      */
-    public void tick() {
-        if (isActive) {
-            timer++;
-            if (timer >= cooldown) {
-                generateDrop();
-                timer = 0;
+    public void tick(Level level, BlockPos pos, BlockState state, IronMobFarmEntity entity) {
+        if (this.isActive) {
+            this.timer++;
+            setChanged(this.level, this.getBlockPos(), this.getBlockState());
+            if (this.timer >= this.cooldown) {
+                this.generateDrop();
+                this.timer = 0;
+                setChanged(this.level, this.getBlockPos(), this.getBlockState());
             }
         }
     }
@@ -126,7 +155,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         ItemStack mobShard = itemHandler.getStackInSlot(0);
         if (mobShard.getItem() instanceof MobShard) {
             CompoundTag nbtData = mobShard.hasTag() ? mobShard.getTag() : null;
-            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) == ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
+            if (nbtData != null && nbtData.getInt(NbtTagsName.KILLED_COUNT) >= ServerConfigs.MOB_SHARD_KILL_NEEDED.get()) {
                 BlockEntity container = getNearbyContainer();
                 if (container == null) {
                     LOGGER.debug("GENERATE-DROP ~ No container found");
@@ -213,12 +242,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
             return null;
         }
 
-        return (new LootContext.Builder((ServerLevel) this.level))
-                .withParameter(LootContextParams.ORIGIN, position)
-                .withParameter(LootContextParams.THIS_ENTITY, mob)
-                .withParameter(LootContextParams.DAMAGE_SOURCE, DamageSource.playerAttack(fakePlayer))
-                .withParameter(LootContextParams.KILLER_ENTITY, fakePlayer)
-                .withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer);
+        return (new LootContext.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, position).withParameter(LootContextParams.THIS_ENTITY, mob).withParameter(LootContextParams.DAMAGE_SOURCE, DamageSource.playerAttack(fakePlayer)).withParameter(LootContextParams.KILLER_ENTITY, fakePlayer).withParameter(LootContextParams.LAST_DAMAGE_PLAYER, fakePlayer);
     }
 
     /**
@@ -248,7 +272,7 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
-        return new MobFarmMenu(pContainerId, pInventory, this);
+        return new MobFarmMenu(pContainerId, pInventory, this, this.data);
     }
 
     @Override
@@ -262,12 +286,14 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         super.load(pTag);
         itemHandler.deserializeNBT(pTag.getCompound("inventory"));
         isActive = pTag.getBoolean("isActive");
+        timer = pTag.getInt("timer");
     }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.put("inventory", itemHandler.serializeNBT());
         pTag.putBoolean("isActive", isActive);
+        pTag.putInt("timer", timer);
         super.saveAdditional(pTag);
     }
 
@@ -311,4 +337,17 @@ public class IronMobFarmEntity extends BlockEntity implements MenuProvider {
         }
         return mobToLoot;
     }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
 }

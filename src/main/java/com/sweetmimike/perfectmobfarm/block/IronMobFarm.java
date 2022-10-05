@@ -1,5 +1,6 @@
 package com.sweetmimike.perfectmobfarm.block;
 
+import com.sweetmimike.perfectmobfarm.block.entity.BlockEntityManager;
 import com.sweetmimike.perfectmobfarm.block.entity.IronMobFarmEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,8 +56,8 @@ public class IronMobFarm extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return pLevel.isClientSide() ? null : ((pLevel1, pPos, pState1, pBlockEntity) -> {
-            ((IronMobFarmEntity) pBlockEntity).tick();
-        });
+           ((IronMobFarmEntity) pBlockEntity).tick(pLevel1, pPos, pState1, (IronMobFarmEntity) pBlockEntity);
+       });
     }
 
     @Override
