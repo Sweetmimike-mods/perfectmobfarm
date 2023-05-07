@@ -4,7 +4,7 @@ Hello, I'm **Sweetmimike** and this is the presentation of my mod **Perfect Mob 
 
 ## Presentation
 
-Perfect Mob farm is a simple mod for Minecraft **1.18.2** that adds new blocks called Mob Farms. These new blocks allow the player to generate loot passively after having correctly setup the mob farms.
+Perfect Mob farm is a simple mod for Minecraft **1.19.2** that adds new blocks called Mob Farms. These new blocks allow the player to generate loot passively after having correctly setup the mob farms.
 
 To setup a mob farm, first you have to craft a **Mob Shard** and link it to a mob type by right clicking on the mob you want to generate loot. Then, when your mob shard is linked to a mob, you have to fill it by killing mob of the same type. Finally, just put the shard in the mob farm and enjoy ! Your mob farm will start **generating** loot.
 

@@ -1,30 +1,33 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
-### [2.0.0] - October 2022
+### [2.0.0] - May 2023
 
 #### Added
+
 - Migrate to 1.19.2
 - Add a progress bar in the mob farm menu
-
-
 
 ### [1.2.0] - 07.07.2022
 
 #### Added
+
 - Add possibility to customize Mob Shard durability
 
 #### Modified
+
 - The mod now use a server configuration
-  -  Config file is now located in the `saves` or `world` folder
+    - Config file is now located in the `saves` or `world` folder
 
 #### Fixed
-- Fix crashes on dedicated servers caused by client setup
 
+- Fix crashes on dedicated servers caused by client setup
 
 ### [1.1.0] - 23.06.2022
 
 #### Added
+
 - Emerald and Netherite mob farms
     - Emerald farms have a looting 1 effect
     - Netherite farms have a looting 3 effect
@@ -33,12 +36,13 @@ All notable changes to this project will be documented in this file.
     - Player can customize mob farms cooldown and the kill count needed to fill up a shard
 
 #### Modified
+
 - Mob farms loot generation
     - They now act as if the player has killed the mob
 
 #### Fixed
-- Mob shards were not damaged when Items.AIR were generated
 
+- Mob shards were not damaged when Items.AIR were generated
 
 ### [1.0.0]
 
